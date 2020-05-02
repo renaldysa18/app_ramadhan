@@ -7,12 +7,12 @@ class SettingModel {
   double _ishaAngle;
 
   SettingModel.parseJson(data){
-    _timeformat = data['timeformat'] ? data['timeformat'] : null;
-    _school = data['school'] ? data['school'] : null;
-    _juristic = data['juristic'] ? data['juristic'] : null;
-    _highlat = data['highlat'] ? data['highlat'] : null;
-    _fajrAngle = data['fajr_angle'] ? data['fajr_angle'] : null;
-    _ishaAngle = data['isha_angle'] ? data['isha_angle'] : null;
+    _timeformat = data['timeformat'] != null? data['timeformat'] : null;
+    _school = data['school'] != null? data['school'] : null;
+    _juristic = data['juristic'] != null? data['juristic'] : null;
+    _highlat = data['highlat']!= null ? data['highlat'] : null;
+    _fajrAngle = data['fajr_angle'] != null? data['fajr_angle'] : null;
+    _ishaAngle = data['isha_angle'] != null? data['isha_angle'] : null;
   }
 
   String get timeformat => _timeformat;

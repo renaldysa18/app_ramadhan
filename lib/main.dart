@@ -1,7 +1,11 @@
+import 'package:appramadan/bloc/pray_bloc.dart';
+import 'package:appramadan/model/datetime_model.dart';
 import 'package:appramadan/utils/string_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart' show DateFormat;
+
+import 'model/main_model.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,12 +31,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   var dateNow = DateTime.now();
   var formaterDate = DateFormat('yyyy MM dd');
+  String subuhTime;
+  String maghribTime;
 
   @override
   void initState() {
     super.initState();
-    String today = formaterDate.format(dateNow);
-    print("date today : $today");
+    String date = DateFormat('yyyy-MM-dd').format(dateNow);
+    prayBloc.fetchPrayTime(city: 'Malang', date: date);
   }
 
   @override
@@ -48,7 +54,7 @@ class _HomeState extends State<Home> {
                   Container(
                     height: 350,
                     width: double.infinity,
-                    child: Image.asset(StringImages.image_woman),
+                    child: _sectionImage(),
                   ),
                   Positioned(
                     bottom: 8.0,
@@ -57,125 +63,148 @@ class _HomeState extends State<Home> {
                     child: Container(
                       height: 80,
                       width: double.maxFinite,
-                      child: Card(
-                          color: Colors.lightBlueAccent.withOpacity(0.2),
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.white70, width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Card(
-                                    color: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            "Subuh",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w100
-                                            ),
-                                          ),
-                                          Text(
-                                            "4:00 AM",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Card(
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            "Subuh",
-                                            style: TextStyle(
-                                                color: Colors.blue,
-                                                fontWeight: FontWeight.w100
-                                            ),
-                                          ),
-                                          Text(
-                                            "4:00 AM",
-                                            style: TextStyle(
-                                              color: Colors.blue,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
+                      child: StreamBuilder(
+                        stream: prayBloc.praytime,
+                        builder: (context, AsyncSnapshot<MainModel> snapshot){
+                          if(snapshot.hasData){
+                            var data = snapshot.data.results.datetime;
+                            return _sectionTime(data);
+                          } else if(snapshot.hasError) {
+                            return Text(snapshot.error.toString());
+                          }
+                          return Center(child: CircularProgressIndicator(),);
+                        },
                       ),
                     ),
                   ),
                 ],
               ),
-              Card(
-                color: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.white70, width: 1),
-                  borderRadius: BorderRadius.circular(10),
+              _sectionDate(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _sectionImage() {
+    return Image.asset(StringImages.image_woman);
+  }
+
+  _sectionTime(List<DateTimeModel> data) {
+    return Card(
+        color: Colors.lightBlueAccent.withOpacity(0.2),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.white70, width: 1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Expanded(
+                child: Card(
+                  color: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Imsak",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w100
+                          ),
+                        ),
+                        Text(
+                          data[0].times.Imsak,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: CalendarCarousel(
-                  weekendTextStyle: TextStyle(
-                    color: Colors.red,
+              ),
+              Expanded(
+                child: Card(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  height: 380.0,
-                  isScrollable: true,
-                  todayButtonColor: Colors.yellow,
-                  selectedDayTextStyle: TextStyle(
-                    color: Colors.yellow,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Maghrib",
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w100
+                          ),
+                        ),
+                        Text(
+                          data[0].times.Maghrib,
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  minSelectedDate: dateNow.subtract(Duration(days: 360)),
-                  maxSelectedDate: dateNow.add(Duration(days: 360)),
-                  showOnlyCurrentMonthDate: false,
-                  weekFormat: false,
-                  headerTextStyle: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25.0,
-                  ),
-                  prevDaysTextStyle: TextStyle(
-                    color: Colors.grey
-                  ),
-                  nextDaysTextStyle: TextStyle(
-                    color: Colors.grey
-                  ),
-                  daysTextStyle: TextStyle(
-                    color: Colors.white
-                  ),
-                  showHeaderButton: true,
-                  iconColor: Colors.white,
                 ),
               ),
             ],
           ),
+        )
+    );
+  }
+
+  _sectionDate() {
+    return Card(
+      color: Colors.blue,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.white70, width: 1),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      child: CalendarCarousel(
+        weekendTextStyle: TextStyle(
+          color: Colors.red,
         ),
+        height: 380.0,
+        isScrollable: true,
+        todayButtonColor: Colors.yellow,
+        selectedDayTextStyle: TextStyle(
+          color: Colors.yellow,
+        ),
+        minSelectedDate: dateNow.subtract(Duration(days: 360)),
+        maxSelectedDate: dateNow.add(Duration(days: 360)),
+        showOnlyCurrentMonthDate: false,
+        weekFormat: false,
+        headerTextStyle: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 25.0,
+        ),
+        prevDaysTextStyle: TextStyle(
+            color: Colors.grey
+        ),
+        nextDaysTextStyle: TextStyle(
+            color: Colors.grey
+        ),
+        daysTextStyle: TextStyle(
+            color: Colors.white
+        ),
+        showHeaderButton: true,
+        iconColor: Colors.white,
       ),
     );
   }

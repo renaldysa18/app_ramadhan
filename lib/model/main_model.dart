@@ -5,10 +5,10 @@ class MainModel {
   String _status;
   ResultModel _resultModel;
 
-  MainModel.parseJson(data){
-    _code = data['code'] ? data['code'] : null;
-    _status = data['status'] ? data['status'] : null;
-    _resultModel = data['results'] ? data['results'] : null;
+  MainModel.parseJson(Map<String, dynamic> data){
+    _code = data['code'] != null ? int.parse(data['code'].toString()) : null;
+    _status = data['status'] != null ? data['status'] : null;
+    _resultModel = data['results'] != null ? ResultModel.parseJson(data['results']) : null;
   }
 
   int get code => _code;

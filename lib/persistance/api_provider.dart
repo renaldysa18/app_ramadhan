@@ -9,7 +9,7 @@ class ApiProvider{
   final baseUrl = "https://api.pray.zone/v2/times/day.json";
 
   Future<MainModel> fetchPrayTime({String city, String date}) async {
-    final path = "$baseUrl?city=$city&date=$date";
+    final path = "$baseUrl?city=$city&date=$date&timeformat=1";
     final response = await client.get(path);
 
     if(response.statusCode == 200){

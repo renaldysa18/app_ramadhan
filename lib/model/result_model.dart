@@ -7,9 +7,9 @@ class ResultModel {
   SettingModel _settingModel;
   List<DateTimeModel> _dateTimes;
 
-  ResultModel.parseJson(data){
-    _locationModel = data['location'] ? data['location'] : null;
-    _settingModel = data['settings'] ? data['settings'] : null;
+  ResultModel.parseJson(Map<String, dynamic>  data){
+    _locationModel = data['location'] != null ? LocationModel.parseJson(data['location'])  : null;
+    _settingModel = data['settings'] != null? SettingModel.parseJson(data['settings']) : null;
 
     List<DateTimeModel> temp = [];
     for(int i = 0; i < data['datetime'].length; i++){

@@ -6,8 +6,8 @@ class DateTimeModel {
   TimeModel _timeModel;
 
   DateTimeModel.parseJson(data){
-    _timeModel = data['times'] ? data['times'] : null;
-    _dateModel = data['dates'] ? data['dates'] : null;
+    _timeModel = data['times'] != null ? TimeModel.parseJson(data['times']) : null;
+    _dateModel = data['dates'] != null ? DateModel.parseJson(data['dates']) : null;
   }
 
   DateModel get dates => _dateModel;

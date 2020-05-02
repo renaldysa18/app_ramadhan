@@ -10,15 +10,15 @@ class TimeModel {
   String _midnight;
 
   TimeModel.parseJson(data){
-    _imsak = data['Imsak'] ? data['Imsak'] : null;
-    _sunrise = data['Sunrise'] ? data['Sunrise'] : null;
-    _fajr = data['Fajr'] ? data['Fajr'] : null;
-    _dhuhr = data['Dhuhr'] ? data['Dhuhr'] : null;
-    _asr = data['Asr'] ? data['Asr'] : null;
-    _sunset = data['Sunset'] ? data['Sunset'] : null;
-    _maghrib = data['Maghrib'] ? data['Maghrib'] : null;
-    _isha = data['Isha'] ? data['Isha'] : null;
-    _midnight = data['Midnight'] ? data['Midnight'] : null;
+    _imsak = data['Imsak'] != null? data['Imsak'] : null;
+    _sunrise = data['Sunrise'] != null? data['Sunrise'] : null;
+    _fajr = data['Fajr'] != null? data['Fajr'] : null;
+    _dhuhr = data['Dhuhr'] != null? data['Dhuhr'] : null;
+    _asr = data['Asr'] != null? data['Asr'] : null;
+    _sunset = data['Sunset'] != null? data['Sunset'] : null;
+    _maghrib = data['Maghrib']!= null ? data['Maghrib'] : null;
+    _isha = data['Isha'] != null? data['Isha'] : null;
+    _midnight = data['Midnight']!= null ? data['Midnight'] : null;
   }
 
   String get Imsak => _imsak;
