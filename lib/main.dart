@@ -1,7 +1,9 @@
 import 'package:appramadan/bloc/pray_bloc.dart';
 import 'package:appramadan/model/datetime_model.dart';
+import 'package:appramadan/ui/detail_main.dart';
 import 'package:appramadan/utils/string_images.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
@@ -205,7 +207,17 @@ class _HomeState extends State<Home> {
         ),
         showHeaderButton: true,
         iconColor: Colors.white,
+        onDayPressed: (DateTime date, List<Event> events) {
+          _navigateToDetail(context);
+        },
       ),
+    );
+  }
+
+  _navigateToDetail(context){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DetailMain()),
     );
   }
 }
