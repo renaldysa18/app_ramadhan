@@ -208,16 +208,17 @@ class _HomeState extends State<Home> {
         showHeaderButton: true,
         iconColor: Colors.white,
         onDayPressed: (DateTime date, List<Event> events) {
-          _navigateToDetail(context);
+          String chooseDate = DateFormat('yyyy-MM-dd').format(date);
+          _navigateToDetail(context, chooseDate);
         },
       ),
     );
   }
 
-  _navigateToDetail(context){
+  _navigateToDetail(context, String chooseDate){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => DetailMain()),
+      MaterialPageRoute(builder: (context) => DetailMain(chooseDate)),
     );
   }
 }
