@@ -1,11 +1,11 @@
 import 'package:appramadan/bloc/pray_bloc.dart';
 import 'package:appramadan/model/datetime_model.dart';
+import 'package:appramadan/model/main_model.dart';
 import 'package:appramadan/utils/string_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
-import 'model/main_model.dart';
 
 void main() => runApp(MyApp());
 
